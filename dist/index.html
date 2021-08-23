@@ -18,6 +18,24 @@
       <div id="project-div">
         <h1 id="project-name">Default</h1>
         <button id="add-task">Add Task</button>
+        <form id="new-task-form"><h3>New Task</h3>
+          <label for="title">Title</label>
+          <input id="title-input" type="text" name="title" required>
+
+          <label for="description">Description</label>
+          <input id="description-input" type="text" name="description" required>
+
+          <label for="dueDate">Due Date</label>
+          <input id="dueDate-input" type="date" name="dueDate" required>
+
+          <label for="priority">Select Priority</label>
+          <select id="priority-input"  name="priority">
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="fiat">Low</option>
+          </select>
+          <button id="submit-button"type="button" class="btn">Submit</button>
+      </form> 
       </div>
     </div>
     <div id="footer"></div>

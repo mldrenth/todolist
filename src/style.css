@@ -24,6 +24,10 @@ body {
     margin-left: 20%;
 }
 
+#new-task-form {
+    display: none;
+}
+
 #side-bar {
     background-color: gray;
     height: 100vh;
