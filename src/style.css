@@ -28,6 +28,10 @@ body {
     display: none;
 }
 
+#new-project-form {
+    display: none;
+}
+
 #side-bar {
     background-color: gray;
     height: 100vh;
