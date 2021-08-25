@@ -1,6 +1,6 @@
 import Task from './task.js'
 import Project from './project.js'
-import {projectList, currentProject, getCurrentProject} from './interaction.js'
+import {projectList, currentProject,setCurrentProject, getCurrentProject, getProjectList} from './interaction.js'
 
 export const projectDiv = document.querySelector("#project-div");
 export const taskListDiv = document.querySelector("#task-list-div")
@@ -10,8 +10,10 @@ export const submitButton = document.querySelector("#submit-button")
 const  projectSubmitButton = document.querySelector("#project-submit-button")
 const addNewProjectButton = document.querySelector("#add-new-project-button")
 const newProjectForm = document.querySelector("#new-project-form")
+const projectButtons = document.querySelector("#project-buttons")
 
 let newTask
+let newProject
 
 
 export const openNewTaskForm = () => {
@@ -43,12 +45,24 @@ export const renderTasks = (currentProject) => {
 }
 
 export const renderProjects = (projectList) => {
-    
+    const currentProjectList = getProjectList();
+
+    currentProjectList.forEach((project) => {
+        const projectButton = document.createElement('button')
+        projectButton.textContent = project.projectName;
+        projectButton.addEventListener("click", function() {
+            setCurrentProject(project.projectName),
+            clearDisplay(taskListDiv),
+            renderTasks(getCurrentProject())
+
+        })
+        projectButtons.appendChild(projectButton);
+    })
 }
 
-const clearDisplay = () => {
-    while (taskListDiv.hasChildNodes()) {
-    taskListDiv.removeChild(taskListDiv.firstChild);
+const clearDisplay = (div) => {
+    while (div.hasChildNodes()) {
+    div.removeChild(div.firstChild);
     }
 }
 
@@ -65,13 +79,31 @@ const createNewTask = () => {
     return newTask
 }
 
+const createNewProject = () => {
+    let newProjectTitle = document.querySelector("#project-input").value;
+
+    newProject = new Project (newProjectTitle);
+    console.log(newProject)
+
+    return newProject
+}
+
 addTaskButton.addEventListener("click", openNewTaskForm)
 addNewProjectButton.addEventListener("click", openNewProjectForm);
 submitButton.addEventListener("click", function() {
     createNewTask(),
      getCurrentProject(),
       currentProject.addTask(newTask),
-       clearDisplay(),
+       clearDisplay(taskListDiv),
         renderTasks(currentProject),
          closeNewTaskForm()
+})
+projectSubmitButton.addEventListener("click", function(){
+    createNewProject(),
+    getProjectList(),
+    projectList.push(newProject),
+    clearDisplay(projectButtons),
+    renderProjects(projectList),
+    closeNewProjectForm(),
+    console.log(getProjectList())
 })
