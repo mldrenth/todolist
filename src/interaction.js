@@ -1,5 +1,8 @@
+import Project from './project.js'
+
 export let projectList = [];
 export let currentProject 
+
 
 export const setCurrentProject = (project) => {
     getProjectList();
@@ -20,3 +23,12 @@ export const getCurrentProject = () => {
 export const getProjectList = () => {
     return projectList
 }
+
+// export const removeTask = (entry) => {
+//     getCurrentProject();
+//     taskList = currentProject.getTaskList();
+//     const index = taskList.indexOf(entry)
+//     if (index > -1) {
+//         taskList.splice(index,1);
+//       }
+// }

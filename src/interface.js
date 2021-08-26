@@ -1,6 +1,6 @@
 import Task from './task.js'
 import Project from './project.js'
-import {projectList, currentProject,setCurrentProject, getCurrentProject, getProjectList} from './interaction.js'
+import {projectList, currentProject,setCurrentProject, getCurrentProject, getProjectList, removeTask} from './interaction.js'
 
 export const projectDiv = document.querySelector("#project-div");
 export const taskListDiv = document.querySelector("#task-list-div")
@@ -11,6 +11,8 @@ const  projectSubmitButton = document.querySelector("#project-submit-button")
 const addNewProjectButton = document.querySelector("#add-new-project-button")
 const newProjectForm = document.querySelector("#new-project-form")
 const projectButtons = document.querySelector("#project-buttons")
+const projectNameHeadline = document.querySelector("#project-name");
+
 
 let newTask
 let newProject
@@ -39,9 +41,42 @@ export const renderTasks = (currentProject) => {
 
     toDoList.forEach((task) => {
         const taskDiv = document.createElement('div')
-        taskDiv.textContent = task.title;
+        taskDiv.style.width = "50vw"
+        taskDiv.style.display = "flex"
+        taskDiv.style.flexDirection = "row"
+        taskDiv.style.justifyContent = "space-between"
+
+        const taskNameDiv = document.createElement('div')
+        taskNameDiv.textContent = task.title;
+        taskDiv.appendChild(taskNameDiv);
+
+        const taskDescriptionDiv = document.createElement('div')
+        taskDescriptionDiv.textContent = task.description;
+        taskDiv.appendChild(taskDescriptionDiv);
+
+        const taskDueDateDiv = document.createElement('div')
+        taskDueDateDiv.textContent = task.dueDate;
+        taskDiv.appendChild(taskDueDateDiv);
+
+        const taskPriorityDiv = document.createElement('div')
+        taskPriorityDiv.textContent = task.priority;
+        taskDiv.appendChild(taskPriorityDiv);
+
+        const taskDeleteButton = document.createElement('button')
+        taskDeleteButton.innerHTML = "Delete Task"
+        taskDeleteButton.addEventListener("click", function() {
+            currentProject.removeTask(task),
+            clearDisplay(taskListDiv),
+            getCurrentProject(),
+            renderTasks(currentProject)
+
+        })
+        taskDiv.appendChild(taskDeleteButton)
+
         taskListDiv.appendChild(taskDiv);
     })
+
+    projectNameHeadline.innerHTML = currentProject.projectName
 }
 
 export const renderProjects = (projectList) => {

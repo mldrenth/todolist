@@ -15,6 +15,10 @@ export default class Project {
     addTask(task) {
         return this.taskList.push(task);
     }
+    removeTask(task) {
+        const index = this.taskList.indexOf(task)
+        return this.taskList.splice(index,1)
+    }
 
     getTaskList() {
         return this.taskList;
