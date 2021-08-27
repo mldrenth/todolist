@@ -38,6 +38,7 @@ const closeNewProjectForm = () => {
 export const renderTasks = (currentProject) => {
     
     const toDoList = currentProject.getTaskList()
+    
 
     toDoList.forEach((task) => {
         const taskDiv = document.createElement('div')
@@ -62,6 +63,16 @@ export const renderTasks = (currentProject) => {
         taskPriorityDiv.textContent = task.priority;
         taskDiv.appendChild(taskPriorityDiv);
 
+        const taskEditButton = document.createElement('button');
+        taskEditButton.innerHTML = "Edit Task";
+        taskEditButton.addEventListener("click", function(){
+            taskDiv.style.display = "none",
+            createEditTaskForm(task,taskListDiv)
+            
+        })
+
+        taskDiv.appendChild(taskEditButton);
+
         const taskDeleteButton = document.createElement('button')
         taskDeleteButton.innerHTML = "Delete Task"
         taskDeleteButton.addEventListener("click", function() {
@@ -73,10 +84,73 @@ export const renderTasks = (currentProject) => {
         })
         taskDiv.appendChild(taskDeleteButton)
 
+
         taskListDiv.appendChild(taskDiv);
     })
 
     projectNameHeadline.innerHTML = currentProject.projectName
+}
+const createEditTaskForm = (task,div) => {
+    const editTaskForm = document.createElement('form')
+    const editTaskTitleInput = document.createElement('input')
+    const editTaskDescriptionInput = document.createElement('input')
+    const editTaskDueDateInput = document.createElement("input")
+    const editTaskPriorityInput = document.createElement("SELECT")
+    const editTaskPriorityOptionHigh = document.createElement("option")
+    const editTaskPriorityOptionMedium = document.createElement("option")
+    const editTaskPriorityOptionLow = document.createElement("option")
+    const editTaskConfirmButton = document.createElement("button")
+    
+
+    editTaskTitleInput.type = "text";
+    editTaskTitleInput.id = "edit-task-title-input"
+    editTaskTitleInput.value = task.title;
+    editTaskForm.appendChild(editTaskTitleInput);
+
+    editTaskDescriptionInput.type = "text";
+    editTaskDescriptionInput.id = "edit-task-description-input"
+    editTaskDescriptionInput.value = task.description;
+    editTaskForm.appendChild(editTaskDescriptionInput);
+
+    editTaskDueDateInput.type = "date"
+    editTaskDueDateInput.id = "edit-task-due-date-input";
+    editTaskDueDateInput.defaultValue = task.dueDate;
+    editTaskForm.appendChild(editTaskDueDateInput);
+
+    editTaskPriorityOptionHigh.text ="High"
+    editTaskPriorityOptionMedium.text ="Medium"
+    editTaskPriorityOptionLow.text ="Low"
+    editTaskPriorityInput.add(editTaskPriorityOptionHigh)
+    editTaskPriorityInput.add(editTaskPriorityOptionMedium)
+    editTaskPriorityInput.add(editTaskPriorityOptionLow)
+    editTaskPriorityInput.value = task.priority;
+    editTaskPriorityInput.id = "edit-task-priority-input"
+    editTaskForm.appendChild(editTaskPriorityInput);
+
+    editTaskConfirmButton.innerHTML = "Change Task"
+    editTaskConfirmButton.type = "button"
+    editTaskConfirmButton.addEventListener("click", function(){
+        changeTask(task),
+        getCurrentProject(),
+        clearDisplay(taskListDiv),
+        renderTasks(currentProject)
+    })
+    editTaskForm.appendChild(editTaskConfirmButton)
+
+    div.appendChild(editTaskForm)
+
+
+}
+
+export const changeTask = (task) => {
+    const changedTitle = document.getElementById("edit-task-title-input").value
+    const changedDescription = document.getElementById("edit-task-description-input").value
+    const changedDueDate = document.getElementById("edit-task-due-date-input").value
+    const changedPriority = document.getElementById("edit-task-priority-input").value
+    task.setTitle(changedTitle);
+    task.setDescription(changedDescription);
+    task.setDueDate(changedDueDate);
+    task.setPriority(changedPriority);
 }
 
 export const renderProjects = (projectList) => {
